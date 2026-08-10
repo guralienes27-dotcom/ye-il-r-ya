@@ -40,10 +40,13 @@ const handleCheckout = () => {
   aria-modal="true"
   aria-label="Alışveriş sepeti"
   aria-hidden={!isOpen}
-  className={`fixed inset-y-0 right-0 z-[70] flex w-full max-w-md flex-col overflow-hidden bg-emerald-dark shadow-soft transition-transform duration-500 ease-out ${
+  className={`fixed inset-0 z-[70] flex h-[100dvh] w-full flex-col overflow-hidden shadow-soft transition-transform duration-300 ease-out ${
     isOpen ? "translate-x-0" : "translate-x-full"
   }`}
-> 
+  style={{
+    backgroundColor: "#0e4b3c",
+  }}
+>
         <div className="flex items-center justify-between border-b border-cream/10 px-6 py-5">
           <h2 className="font-display text-xl font-semibold text-cream">Sepetim</h2>
           <button
