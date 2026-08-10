@@ -25,24 +25,25 @@ const handleCheckout = () => {
 
   return (
     <>
-       <div
-        aria-hidden="true"
-        onClick={closeCart}
-        className={`fixed inset-0 z-[60] bg-emerald-dark/50 backdrop-blur-sm transition-opacity duration-500 ${
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      />
+      <div
+  aria-hidden="true"
+  onClick={closeCart}
+  className={`fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+    isOpen
+      ? "pointer-events-auto opacity-100"
+      : "pointer-events-none opacity-0"
+  }`}
+/>
 
        <aside
-        role="dialog"
-        aria-modal="true"
-        aria-label="Alışveriş sepeti"
-        aria-hidden={!isOpen}
-        className={`glass fixed inset-y-0 right-0 z-[70] flex w-full max-w-md flex-col shadow-soft transition-transform duration-500 ease-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        style={{ background: "rgba(14, 75, 60, 0.88)" }}
-      >
+  role="dialog"
+  aria-modal="true"
+  aria-label="Alışveriş sepeti"
+  aria-hidden={!isOpen}
+  className={`fixed inset-y-0 right-0 z-[70] flex w-full max-w-md flex-col overflow-hidden bg-emerald-dark shadow-soft transition-transform duration-500 ease-out ${
+    isOpen ? "translate-x-0" : "translate-x-full"
+  }`}
+> 
         <div className="flex items-center justify-between border-b border-cream/10 px-6 py-5">
           <h2 className="font-display text-xl font-semibold text-cream">Sepetim</h2>
           <button
