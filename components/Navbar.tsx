@@ -226,7 +226,7 @@ export default function Navbar() {
             type="button"
             aria-label={`Sepet${totalItems ? `, ${totalItems} ürün` : ""}`}
             onClick={openCart}
-            className="relative rounded-full p-2.5 transition-colors duration-300 hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            className="relative z-10 flex h-11 w-11 touch-manipulation items-center justify-center rounded-full transition-colors duration-300 hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           >
             <ShoppingBag className="h-5 w-5 text-cream" />
             {totalItems > 0 && (
@@ -272,7 +272,7 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="relative rounded-full p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:hidden"
+            className="relative z-10 flex h-11 w-11 touch-manipulation items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold lg:hidden"
           >
             <Menu
               className={`h-6 w-6 text-cream transition-all duration-300 ${
@@ -293,9 +293,11 @@ export default function Navbar() {
         id="mobile-menu"
         role="region"
         aria-label="Mobil menü"
-        className={`grid transition-all duration-500 ease-out lg:hidden ${
-          menuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
+        className={`grid transition-all duration-300 ease-out lg:hidden ${
+  menuOpen
+    ? "grid-rows-[1fr] opacity-100 pointer-events-auto"
+    : "grid-rows-[0fr] opacity-0 pointer-events-none"
+}`} 
       >
         <div className="overflow-hidden">
           <div className="mx-6 mt-4 flex flex-col gap-1 rounded-2xl bg-emerald-dark p-4 shadow-soft">
