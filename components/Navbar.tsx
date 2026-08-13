@@ -117,7 +117,7 @@ export default function Navbar() {
         {/* Logo — left */}
         <Link
   href="/#home"
-          aria-label="Yeşil Rüya Cennet Çamuru — Ana sayfa"
+          aria-label="Cennet Çamuru & Gerebiç — Ana sayfa"
           className="flex shrink-0 items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-dark"
         >
           <span
