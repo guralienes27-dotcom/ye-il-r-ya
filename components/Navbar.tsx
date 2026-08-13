@@ -145,7 +145,7 @@ export default function Navbar() {
               Yeşil Rüya
             </span>
             <span className="font-accent text-xs italic tracking-widest text-gold-light">
-              Cennet Çamuru
+              Cennet Çamuru & Gerebiç 
             </span>
           </span>
         </Link>
