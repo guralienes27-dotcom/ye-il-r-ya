@@ -105,7 +105,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out ${
+     className={`fixed inset-x-0 top-[40px] z-50 transition-all duration-500 ease-out ${ 
         scrolled ? "glass shadow-soft py-2.5" : "bg-transparent py-5"
       }`}
       style={scrolled ? { background: "rgba(14, 75, 60, 0.72)" } : undefined}
