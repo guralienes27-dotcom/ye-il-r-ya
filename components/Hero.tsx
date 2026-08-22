@@ -1,13 +1,7 @@
-"use client";
+ import Image from "next/image";
+ import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
 
-import Image from "next/image";
-import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-
-/**
- * Static particle field
- */
-const particles = [
+ const particles = [
   { top: "12%", left: "6%", size: 4, delay: "0s", duration: "7s" },
   { top: "22%", left: "18%", size: 6, delay: "1.2s", duration: "9s" },
   { top: "8%", left: "32%", size: 3, delay: "2.4s", duration: "6.5s" },
@@ -26,48 +20,17 @@ const particles = [
   { top: "85%", left: "50%", size: 4, delay: "3.4s", duration: "9.2s" },
   { top: "40%", left: "90%", size: 3, delay: "0.4s", duration: "7.2s" },
   { top: "90%", left: "20%", size: 4, delay: "2.6s", duration: "8.3s" },
-];
-
-const galleryImages = [
-  {
-    src: "/images/kadayif.png",
-    alt: "Yeşil Rüya Kadayıf",
-  },
-  {
-    src: "/images/katmer.png",
-    alt: "Yeşil Rüya Katmer",
-  },
-  {
-    src: "/images/tel-kadayif.png",
-    alt: "Yeşil Rüya Tel Kadayıf",
-  },
-  {
-    src: "/images/cennet-camuru.png",
-    alt: "Yeşil Rüya Cennet Çamuru",
-  },
-];
-
+ ];
+ 
 export default function Hero() {
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((current) => (current + 1) % galleryImages.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
+   return (
     <section
       id="home"
       className="relative flex h-screen min-h-[640px] w-full items-center overflow-hidden bg-emerald-radial pt-20 sm:pt-24"
     >
-      {/* Ambient grain texture */}
-      <div className="grain absolute inset-0" />
+       <div className="grain absolute inset-0" />
 
-      {/* Soft gold light effects */}
-      <div
+       <div
         className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-gold/25 blur-[110px]"
         aria-hidden="true"
       />
@@ -82,8 +45,7 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* Gold swirl */}
-      <svg
+       <svg
         viewBox="0 0 800 800"
         className="pointer-events-none absolute -right-40 -top-40 h-[640px] w-[640px] animate-drift-slow opacity-20 lg:-right-20"
         aria-hidden="true"
@@ -103,8 +65,7 @@ export default function Hero() {
         />
       </svg>
 
-      {/* Floating particles */}
-      <div
+       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
@@ -125,9 +86,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
-
-        {/* LEFT SIDE */}
-        <div className="max-w-xl text-center lg:text-left">
+         <div className="max-w-xl text-center lg:text-left">
           <span
             className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
             style={{ animationDelay: "0s" }}
@@ -174,13 +133,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* RIGHT SIDE - AUTOMATIC GALLERY */}
-        <div
+         <div
           className="animate-fade-up relative mx-auto h-[360px] w-full max-w-md lg:h-[560px] lg:max-w-none"
           style={{ animationDelay: "0.2s" }}
         >
-          {/* Gold rotating ring */}
-          <svg
+           <svg
             viewBox="0 0 400 400"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[112%] w-[112%] -translate-x-1/2 -translate-y-1/2 animate-drift-slow opacity-40"
             aria-hidden="true"
@@ -196,53 +153,49 @@ export default function Hero() {
             />
           </svg>
 
-          {/* Gallery */}
-          <div className="absolute inset-0 animate-float">
+           <div className="absolute inset-0 animate-float">
             <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
+              
+              {/* KENDİ FOTOĞRAFIMIZ */}
+              <Image
+                src="/images/cennet-camuru.png"
+                alt="Yeşil Rüya Cennet Çamuru"
+                fill
+                priority
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover"
+              />
 
-              {galleryImages.map((image, index) => (
-                <div
-                  key={image.src}
-                  className={`absolute inset-0 transition-opacity duration-1000 ${
-                    currentImage === index ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    priority={index === 0}
-                    sizes="(min-width: 1024px) 40vw, 90vw"
-                    className="object-cover"
-                  />
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
+            </div>
+          </div>
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
-                </div>
-              ))}
+          <div className="glass absolute -bottom-6 left-1/2 w-[86%] -translate-x-1/2 rounded-2xl p-5 shadow-soft sm:w-72 lg:-bottom-8 lg:left-auto lg:right-0 lg:translate-x-0">
+            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-light">
+              Bu Haftanın Seçkisi
+            </p>
 
-              {/* Gallery indicators */}
-              <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-                {galleryImages.map((_, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    aria-label={`Fotoğraf ${index + 1}`}
-                    onClick={() => setCurrentImage(index)}
-                    className={`h-2 rounded-full transition-all duration-500 ${
-                      currentImage === index
-                        ? "w-7 bg-gold-light"
-                        : "w-2 bg-cream/50"
-                    }`}
-                  />
-                ))}
-              </div>
+            <p className="mt-1 font-display text-lg font-semibold text-cream">
+              Cennet Çamuru Klasik
+            </p>
+
+            <div className="mt-3 flex items-center justify-between">
+              <span className="font-display text-xl font-bold text-gold-light">
+                ₺420
+              </span>
+
+              <a
+                href="#products"
+                className="rounded-full bg-cream/95 px-4 py-2 font-body text-xs font-bold text-emerald-dark transition-transform hover:scale-105"
+              >
+                Sepete Ekle
+              </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Particle animation */}
-      <style>{`
+       <style>{`
         .hero-particle {
           background: radial-gradient(
             circle,
@@ -291,4 +244,4 @@ export default function Hero() {
       `}</style>
     </section>
   );
-} 
+}
