@@ -1,7 +1,7 @@
  import Image from "next/image";
- import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
 
- const particles = [
+const particles = [
   { top: "12%", left: "6%", size: 4, delay: "0s", duration: "7s" },
   { top: "22%", left: "18%", size: 6, delay: "1.2s", duration: "9s" },
   { top: "8%", left: "32%", size: 3, delay: "2.4s", duration: "6.5s" },
@@ -20,17 +20,17 @@
   { top: "85%", left: "50%", size: 4, delay: "3.4s", duration: "9.2s" },
   { top: "40%", left: "90%", size: 3, delay: "0.4s", duration: "7.2s" },
   { top: "90%", left: "20%", size: 4, delay: "2.6s", duration: "8.3s" },
- ];
- 
+];
+
 export default function Hero() {
-   return (
+  return (
     <section
       id="home"
       className="relative flex h-screen min-h-[640px] w-full items-center overflow-hidden bg-emerald-radial pt-20 sm:pt-24"
     >
-       <div className="grain absolute inset-0" />
+      <div className="grain absolute inset-0" />
 
-       <div
+      <div
         className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-gold/25 blur-[110px]"
         aria-hidden="true"
       />
@@ -45,7 +45,7 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-       <svg
+      <svg
         viewBox="0 0 800 800"
         className="pointer-events-none absolute -right-40 -top-40 h-[640px] w-[640px] animate-drift-slow opacity-20 lg:-right-20"
         aria-hidden="true"
@@ -65,7 +65,7 @@ export default function Hero() {
         />
       </svg>
 
-       <div
+      <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
@@ -86,7 +86,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
-         <div className="max-w-xl text-center lg:text-left">
+        <div className="max-w-xl text-center lg:text-left">
           <span
             className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
             style={{ animationDelay: "0s" }}
@@ -133,11 +133,11 @@ export default function Hero() {
           </div>
         </div>
 
-         <div
+        <div
           className="animate-fade-up relative mx-auto h-[360px] w-full max-w-md lg:h-[560px] lg:max-w-none"
           style={{ animationDelay: "0.2s" }}
         >
-           <svg
+          <svg
             viewBox="0 0 400 400"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[112%] w-[112%] -translate-x-1/2 -translate-y-1/2 animate-drift-slow opacity-40"
             aria-hidden="true"
@@ -153,7 +153,7 @@ export default function Hero() {
             />
           </svg>
 
-           <div className="absolute inset-0 animate-float">
+          <div className="absolute inset-0 animate-float">
             <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
               
               {/* KENDİ FOTOĞRAFIMIZ */}
@@ -195,7 +195,7 @@ export default function Hero() {
         </div>
       </div>
 
-       <style>{`
+      <style>{`
         .hero-particle {
           background: radial-gradient(
             circle,
@@ -244,4 +244,4 @@ export default function Hero() {
       `}</style>
     </section>
   );
-}
+} 
