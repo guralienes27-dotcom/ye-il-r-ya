@@ -32,7 +32,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex h-screen min-h-[640px] w-full flex-col overflow-hidden bg-emerald-radial pt-20 sm:pt-24"
+      className="relative flex min-h-[850px] w-full items-center overflow-hidden bg-emerald-radial pt-28 pb-24 sm:min-h-[900px] sm:pt-32 sm:pb-28 lg:min-h-[920px]"
     >
       <div className="grain absolute inset-0" />
 
@@ -168,7 +168,7 @@ export default function Hero() {
                 fill
                 priority
                 sizes="(min-width: 1024px) 40vw, 90vw"
-                className="object-cover"
+                className="object-contain"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
