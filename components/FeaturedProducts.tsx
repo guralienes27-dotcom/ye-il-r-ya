@@ -1,5 +1,13 @@
 import { products } from "@/lib/data";
-import ProductCard from "./ProductCard";
+import ProductCard, { ProductCardExtras } from "./ProductCard";
+
+const enrichment: Record<string, ProductCardExtras> = {
+  "cennet-camuru-klasik": { isBestSeller: true, oldPrice: 480 },
+  "yesil-ruya-fistik": { isNew: true },
+  "altin-varak-camur": { stockLeft: 4 },
+  "narli-cennet": { isNew: true, stockLeft: 5 },
+  "karamelize-badem": { oldPrice: 460 },
+};
 
 export default function FeaturedProducts() {
   return (
@@ -18,9 +26,13 @@ export default function FeaturedProducts() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              {...enrichment[product.id]}
+            />
           ))}
         </div>
       </div>

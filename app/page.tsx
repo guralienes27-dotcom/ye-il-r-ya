@@ -1,3 +1,4 @@
+import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import FeaturedProducts from "@/components/FeaturedProducts";
@@ -8,14 +9,22 @@ import Footer from "@/components/Footer";
 
 export default function HomePage() {
   return (
-    <main className="overflow-x-hidden bg-cream">
+    <main className="min-h-screen overflow-x-hidden bg-cream">
+      <AnnouncementBar />
+
       <Navbar />
+
       <Hero />
+
       <FeaturedProducts />
+
       <WhyChooseUs />
+
       <Reviews />
+
       <InstagramGallery />
+
       <Footer />
     </main>
   );
-}
+} 

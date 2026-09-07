@@ -1,4 +1,4 @@
- import Image from "next/image";
+import Image from "next/image";
 import { ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
 
 const particles = [
@@ -22,11 +22,17 @@ const particles = [
   { top: "90%", left: "20%", size: 4, delay: "2.6s", duration: "8.3s" },
 ];
 
+const galleryImages = [
+  "/images/fıstıklı-katmer.png",
+  "/images/kadayif(1).png",
+  "/images/tel-kadayif.png",
+];
+
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex h-screen min-h-[640px] w-full items-center overflow-hidden bg-emerald-radial pt-20 sm:pt-24"
+      className="relative flex h-screen min-h-[640px] w-full flex-col overflow-hidden bg-emerald-radial pt-20 sm:pt-24"
     >
       <div className="grain absolute inset-0" />
 
@@ -85,7 +91,7 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
+      <div className="relative mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
         <div className="max-w-xl text-center lg:text-left">
           <span
             className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
@@ -155,7 +161,6 @@ export default function Hero() {
 
           <div className="absolute inset-0 animate-float">
             <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
-              
               {/* KENDİ FOTOĞRAFIMIZ */}
               <Image
                 src="/images/cennet-camuru.png"
@@ -169,29 +174,26 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="glass absolute -bottom-6 left-1/2 w-[86%] -translate-x-1/2 rounded-2xl p-5 shadow-soft sm:w-72 lg:-bottom-8 lg:left-auto lg:right-0 lg:translate-x-0">
-            <p className="font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-light">
-              Bu Haftanın Seçkisi
-            </p>
-
-            <p className="mt-1 font-display text-lg font-semibold text-cream">
-              Cennet Çamuru Klasik
-            </p>
-
-            <div className="mt-3 flex items-center justify-between">
-              <span className="font-display text-xl font-bold text-gold-light">
-                ₺420
-              </span>
-
-              <a
-                href="#products"
-                className="rounded-full bg-cream/95 px-4 py-2 font-body text-xs font-bold text-emerald-dark transition-transform hover:scale-105"
-              >
-                Sepete Ekle
-              </a>
+      {/* KAYAN GALERİ ŞERİDİ */}
+      <div className="relative z-10 w-full overflow-hidden border-t border-cream/10 bg-emerald-dark/40 py-5 backdrop-blur-sm">
+        <div className="flex w-max animate-marquee gap-6">
+          {[...galleryImages, ...galleryImages].map((src, i) => (
+            <div
+              key={i}
+              className="relative h-28 w-40 flex-shrink-0 overflow-hidden rounded-xl ring-1 ring-cream/15 sm:h-32 sm:w-48"
+            >
+              <Image
+                src={src}
+                alt={`Galeri görseli ${(i % galleryImages.length) + 1}`}
+                fill
+                sizes="200px"
+                className="object-cover"
+              />
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -244,4 +246,5 @@ export default function Hero() {
       `}</style>
     </section>
   );
-} 
+}
+ 
