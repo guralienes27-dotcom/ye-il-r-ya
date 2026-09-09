@@ -91,8 +91,15 @@ export default function Hero() {
         ))}
       </div>
 
+      {/* İçerik: max-w-7xl konteyner ortalanmış, grid iki eşit sütun */}
       <div className="relative mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
-        <div className="max-w-xl text-center lg:text-left">
+        {/*
+          DÜZELTME: bu dış div'de mx-auto YOKTU, bu yüzden max-w-xl kutusu
+          grid hücresinin soluna yapışıyor ve "sola kaymış" görünüyordu.
+          mx-auto ile mobilde/tablette tam ortalanıyor, lg:mx-0 ile büyük
+          ekranda grid'in kendi dengesine bırakılıyor.
+        */}
+        <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
           <span
             className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
             style={{ animationDelay: "0s" }}
@@ -247,4 +254,3 @@ export default function Hero() {
     </section>
   );
 }
- 
