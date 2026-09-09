@@ -22,7 +22,7 @@ const particles = [
   { top: "90%", left: "20%", size: 4, delay: "2.6s", duration: "8.3s" },
 ];
 
-const galleryImages = [
+const images = [
   "/images/fıstıklı-katmer.png",
   "/images/kadayif(1).png",
   "/images/tel-kadayif.png",
@@ -124,7 +124,7 @@ export default function Hero() {
               style={{ animationDelay: "0.24s" }}
             >
               Geleneksel tarif, günlük üretim, gerçek Antep fıstığı ve eşsiz
-              lezzet.
+              lezzet hepsi bir arada. simdi sipariş ver.
             </p>
 
             <div
@@ -173,7 +173,7 @@ export default function Hero() {
               <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
                 {/* KENDİ FOTOĞRAFIMIZ */}
                 <Image
-                  src="/images/cennet-camuru.png"
+                  src="/images/kadayif(1).png"
                   alt="Yeşil Rüya Cennet Çamuru"
                   fill
                   priority
@@ -191,14 +191,14 @@ export default function Hero() {
       {/* KAYAN GALERİ ŞERİDİ — artık ayrı bir satır olarak en altta, metne değmiyor */}
       <div className="relative z-10 w-full overflow-hidden border-t border-cream/10 bg-emerald-dark/40 py-5 backdrop-blur-sm">
         <div className="flex w-max animate-marquee gap-6">
-          {[...galleryImages, ...galleryImages].map((src, i) => (
+          {[...images, ...images].map((src, i) => (
             <div
               key={i}
               className="relative h-28 w-40 flex-shrink-0 overflow-hidden rounded-xl ring-1 ring-cream/15 sm:h-32 sm:w-48"
             >
               <Image
                 src={src}
-                alt={`Galeri görseli ${(i % galleryImages.length) + 1}`}
+                alt={`Galeri görseli ${(i % images.length) + 1}`}
                 fill
                 sizes="200px"
                 className="object-cover"
