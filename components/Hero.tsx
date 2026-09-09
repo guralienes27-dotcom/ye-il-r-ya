@@ -23,10 +23,15 @@ const particles = [
 ];
 
 const images = [
-  "/images/fıstıklı-katmer.png",
-  "/images/kadayif(1).png",
+  "/images/fistikli-katmer.png",
   "/images/tel-kadayif.png",
+  "/images/cennet-camuru.jpg",
+  "/images/gerebic.webp",
 ];
+
+// Tek bir galeri grubu ekran genişliğinden kısa kalırsa kayarken boşluk görünebilir.
+// Bu yüzden aynı görselleri grup içinde de iki kez kullanıyoruz.
+const marqueeImages = [...images, ...images];
 
 export default function Hero() {
   return (
@@ -108,7 +113,7 @@ export default function Hero() {
               style={{ animationDelay: "0s" }}
             >
               <Sparkles className="h-3.5 w-3.5" />
-              GAZİANTEP&apos;İN GURURU · GÜNLÜK ÜRETİM
+              GAZİANTEP&apos;İN GURURU · GÜNLÜK ÜRETİM ve TAZELİK
             </span>
 
             <h1
@@ -124,7 +129,7 @@ export default function Hero() {
               style={{ animationDelay: "0.24s" }}
             >
               Geleneksel tarif, günlük üretim, gerçek Antep fıstığı ve eşsiz
-              lezzet hepsi bir arada. simdi sipariş ver.
+              lezzet hepsi bir arada. şimdi sipariş ver.
             </p>
 
             <div
@@ -173,7 +178,7 @@ export default function Hero() {
               <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
                 {/* KENDİ FOTOĞRAFIMIZ */}
                 <Image
-                  src="/images/kadayif(1).png"
+                  src="/images/cennet-camuru.jpg"
                   alt="Yeşil Rüya Cennet Çamuru"
                   fill
                   priority
@@ -188,21 +193,29 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* KAYAN GALERİ ŞERİDİ — artık ayrı bir satır olarak en altta, metne değmiyor */}
+      {/* KESİNTİSİZ SONSUZ KAYAN GALERİ */}
       <div className="relative z-10 w-full overflow-hidden border-t border-cream/10 bg-emerald-dark/40 py-5 backdrop-blur-sm">
-        <div className="flex w-max animate-marquee gap-6">
-          {[...images, ...images].map((src, i) => (
+        <div className="hero-marquee flex w-max">
+          {[0, 1].map((group) => (
             <div
-              key={i}
-              className="relative h-28 w-40 flex-shrink-0 overflow-hidden rounded-xl ring-1 ring-cream/15 sm:h-32 sm:w-48"
+              key={group}
+              className="flex shrink-0 gap-6 pr-6"
+              aria-hidden={group === 1 ? true : undefined}
             >
-              <Image
-                src={src}
-                alt={`Galeri görseli ${(i % images.length) + 1}`}
-                fill
-                sizes="200px"
-                className="object-cover"
-              />
+              {marqueeImages.map((src, i) => (
+                <div
+                  key={`${group}-${i}`}
+                  className="relative h-28 w-40 flex-shrink-0 overflow-hidden rounded-xl ring-1 ring-cream/15 sm:h-32 sm:w-48"
+                >
+                  <Image
+                    src={src}
+                    alt={group === 0 ? `Galeri görseli ${(i % images.length) + 1}` : ""}
+                    fill
+                    sizes="200px"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -221,6 +234,22 @@ export default function Hero() {
           animation-name: heroParticleFloat;
           animation-timing-function: ease-in-out;
           animation-iteration-count: infinite;
+        }
+
+
+        .hero-marquee {
+          animation: heroMarquee 28s linear infinite;
+          will-change: transform;
+        }
+
+        @keyframes heroMarquee {
+          from {
+            transform: translateX(0);
+          }
+
+          to {
+            transform: translateX(-50%);
+          }
         }
 
         @keyframes heroParticleFloat {
@@ -252,6 +281,10 @@ export default function Hero() {
           .hero-particle {
             animation: none;
             opacity: 0.5;
+          }
+
+          .hero-marquee {
+            animation: none;
           }
         }
       `}</style>

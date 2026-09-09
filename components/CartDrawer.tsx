@@ -20,6 +20,7 @@ export default function CartDrawer() {
 
 const handleCheckout = () => {
   console.log("CHECKOUT BUTONUNA BASILDI");
+  closeCart();
   router.push("/checkout");
 };
 

@@ -81,7 +81,7 @@ export default function Footer() {
             <form className="mt-4 flex items-center gap-2">
               <input
                 type="email"
-                placeholder="E-posta adresiniz"
+                placeholder="E-mail adresi"
                 className="w-full rounded-full border border-cream/15 bg-cream/5 px-4 py-2.5 font-body text-sm text-cream placeholder:text-cream/40 outline-none focus:border-gold"
               />
               <button
@@ -94,13 +94,13 @@ export default function Footer() {
 
             <div className="mt-7 space-y-3">
               <p className="flex items-center gap-2 font-body text-sm text-cream/55">
-                <MapPin className="h-4 w-4 text-gold-light" /> Gaziantep, Türkiye
+                <MapPin className="h-4 w-4 text-gold-light" /> Akkent 134007 nolu cadde oska yağmur sitesi 6CE c blok,27470 Şahinbey/Gaziantep
               </p>
               <p className="flex items-center gap-2 font-body text-sm text-cream/55">
-                <Phone className="h-4 w-4 text-gold-light" /> +90 342 000 00 00
+                <Phone className="h-4 w-4 text-gold-light" /> +90 546 590 27 79
               </p>
               <p className="flex items-center gap-2 font-body text-sm text-cream/55">
-                <Mail className="h-4 w-4 text-gold-light" /> merhaba@yesilruya.com
+                <Mail className="h-4 w-4 text-gold-light" />
               </p>
             </div>
           </div>
