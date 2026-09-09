@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -16,22 +17,26 @@ import {
   updateProfile,
   type User,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+
+import { auth } from "@/lib/firebase";
 import type { UserProfile } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
   profile: UserProfile | null;
   loading: boolean;
+
   signUp: (
     fullName: string,
     email: string,
     phone: string,
     password: string
   ) => Promise<void>;
+
   signIn: (email: string, password: string) => Promise<void>;
+
   signOutUser: () => Promise<void>;
+
   resetPassword: (email: string) => Promise<void>;
 }
 
@@ -43,24 +48,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
 
       if (firebaseUser) {
         try {
-          const snap = await getDoc(doc(db, "users", firebaseUser.uid));
-          if (snap.exists()) {
-            setProfile(snap.data() as UserProfile);
+          const savedProfile = localStorage.getItem(
+            `profile_${firebaseUser.uid}`
+          );
+
+          if (savedProfile) {
+            setProfile(JSON.parse(savedProfile));
           } else {
-            setProfile(null);
+            const fallbackProfile: UserProfile = {
+              uid: firebaseUser.uid,
+              fullName: firebaseUser.displayName || "Kullanıcı",
+              email: firebaseUser.email || "",
+              phone: "",
+              createdAt: new Date().toISOString(),
+              favorites: [],
+              addresses: [],
+              orders: [],
+            };
+
+            setProfile(fallbackProfile);
           }
-        } catch {
+        } catch (error) {
+          console.error("Profil bilgileri okunamadı:", error);
           setProfile(null);
         }
       } else {
         setProfile(null);
       }
 
+      // Kullanıcı kontrolü bitti.
       setLoading(false);
     });
 
@@ -94,11 +115,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       orders: [],
     };
 
-    await setDoc(doc(db, "users", credential.user.uid), {
-      ...newProfile,
-      createdAt: serverTimestamp(),
-    });
+    localStorage.setItem(
+      `profile_${credential.user.uid}`,
+      JSON.stringify(newProfile)
+    );
 
+    setUser(credential.user);
     setProfile(newProfile);
   };
 
@@ -107,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOutUser = async () => {
+    setProfile(null);
     await firebaseSignOut(auth);
   };
 
