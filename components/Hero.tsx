@@ -32,7 +32,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-[850px] w-full items-center overflow-hidden bg-emerald-radial pt-28 pb-24 sm:min-h-[900px] sm:pt-32 sm:pb-28 lg:min-h-[920px]"
+      className="relative flex w-full flex-col overflow-hidden bg-emerald-radial pt-28 sm:pt-32"
     >
       <div className="grain absolute inset-0" />
 
@@ -91,100 +91,104 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* İçerik: max-w-7xl konteyner ortalanmış, grid iki eşit sütun */}
-      <div className="relative mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
-        {/*
-          DÜZELTME: bu dış div'de mx-auto YOKTU, bu yüzden max-w-xl kutusu
-          grid hücresinin soluna yapışıyor ve "sola kaymış" görünüyordu.
-          mx-auto ile mobilde/tablette tam ortalanıyor, lg:mx-0 ile büyük
-          ekranda grid'in kendi dengesine bırakılıyor.
-        */}
-        <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
-          <span
-            className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
-            style={{ animationDelay: "0s" }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            GAZİANTEP&apos;İN GURURU · GÜNLÜK ÜRETİM
-          </span>
+      {/*
+        KÖK NEDEN: section "flex" idi ama "flex-col" değildi, bu yüzden
+        bu içerik bloğu ile en alttaki galeri şeridi yan yana (row)
+        dizilmeye çalışıyor, birbirine giriyor ve başlık kelime kelime
+        alt satıra düşüyordu. Şimdi section flex-col; bu blok "flex-1"
+        ile üstte kalan tüm dikey alanı kaplayıp içeriği ortalıyor,
+        galeri şeridi ise doğal akışta en altta, hiçbir yazıya değmeden
+        duruyor.
+      */}
+      <div className="relative z-10 flex flex-1 items-center py-12 sm:py-16">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
+          <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
+            <span
+              className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1.5 font-body text-xs font-semibold tracking-[0.2em] text-gold-light"
+              style={{ animationDelay: "0s" }}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              GAZİANTEP&apos;İN GURURU · GÜNLÜK ÜRETİM
+            </span>
 
-          <h1
-            className="animate-fade-up text-balance font-display text-[2.6rem] font-semibold leading-[1.12] text-cream sm:text-6xl lg:text-[4.1rem] lg:leading-[1.08]"
-            style={{ animationDelay: "0.12s" }}
-          >
-            Gaziantep&apos;in En Özel{" "}
-            <span className="text-gold-light">Cennet Çamuru</span>
-          </h1>
+            <h1
+              className="animate-fade-up text-balance font-display text-4xl font-semibold leading-[1.15] text-cream sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]"
+              style={{ animationDelay: "0.12s" }}
+            >
+              Gaziantep&apos;in En Özel{" "}
+              <span className="text-gold-light">Cennet Çamuru</span>
+            </h1>
 
-          <p
-            className="animate-fade-up mx-auto mt-6 max-w-md font-accent text-xl italic leading-relaxed text-cream/70 lg:mx-0"
-            style={{ animationDelay: "0.24s" }}
-          >
-            Geleneksel tarif, günlük üretim, gerçek Antep fıstığı ve eşsiz
-            lezzet.
-          </p>
+            <p
+              className="animate-fade-up mx-auto mt-6 max-w-md font-accent text-lg italic leading-relaxed text-cream/70 lg:mx-0"
+              style={{ animationDelay: "0.24s" }}
+            >
+              Geleneksel tarif, günlük üretim, gerçek Antep fıstığı ve eşsiz
+              lezzet.
+            </p>
+
+            <div
+              className="animate-fade-up mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
+              style={{ animationDelay: "0.36s" }}
+            >
+              <a
+                href="#products"
+                className="group inline-flex items-center gap-2 rounded-full bg-gold-sheen bg-[length:200%_auto] px-8 py-4 font-body text-sm font-bold tracking-wide text-emerald-dark shadow-gold transition-all duration-500 hover:bg-right hover:shadow-lg"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                Hemen Sipariş Ver
+              </a>
+
+              <a
+                href="#products"
+                className="group inline-flex items-center gap-2 rounded-full border border-cream/25 bg-cream/5 px-8 py-4 font-body text-sm font-semibold text-cream/90 backdrop-blur transition-colors duration-300 hover:bg-cream/10"
+              >
+                Ürünleri İncele
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
 
           <div
-            className="animate-fade-up mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
-            style={{ animationDelay: "0.36s" }}
+            className="animate-fade-up relative mx-auto h-[320px] w-full max-w-md lg:h-[480px] lg:max-w-none"
+            style={{ animationDelay: "0.2s" }}
           >
-            <a
-              href="#products"
-              className="group inline-flex items-center gap-2 rounded-full bg-gold-sheen bg-[length:200%_auto] px-8 py-4 font-body text-sm font-bold tracking-wide text-emerald-dark shadow-gold transition-all duration-500 hover:bg-right hover:shadow-lg"
+            <svg
+              viewBox="0 0 400 400"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[112%] w-[112%] -translate-x-1/2 -translate-y-1/2 animate-drift-slow opacity-40"
+              aria-hidden="true"
             >
-              <ShoppingBag className="h-4 w-4" />
-              Hemen Sipariş Ver
-            </a>
-
-            <a
-              href="#products"
-              className="group inline-flex items-center gap-2 rounded-full border border-cream/25 bg-cream/5 px-8 py-4 font-body text-sm font-semibold text-cream/90 backdrop-blur transition-colors duration-300 hover:bg-cream/10"
-            >
-              Ürünleri İncele
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-          </div>
-        </div>
-
-        <div
-          className="animate-fade-up relative mx-auto h-[360px] w-full max-w-md lg:h-[560px] lg:max-w-none"
-          style={{ animationDelay: "0.2s" }}
-        >
-          <svg
-            viewBox="0 0 400 400"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[112%] w-[112%] -translate-x-1/2 -translate-y-1/2 animate-drift-slow opacity-40"
-            aria-hidden="true"
-          >
-            <circle
-              cx="200"
-              cy="200"
-              r="188"
-              fill="none"
-              stroke="#D4AF37"
-              strokeWidth="1"
-              strokeDasharray="2 10"
-            />
-          </svg>
-
-          <div className="absolute inset-0 animate-float">
-            <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
-              {/* KENDİ FOTOĞRAFIMIZ */}
-              <Image
-                src="/images/cennet-camuru.png"
-                alt="Yeşil Rüya Cennet Çamuru"
-                fill
-                priority
-                sizes="(min-width: 1024px) 40vw, 90vw"
-                className="object-contain"
+              <circle
+                cx="200"
+                cy="200"
+                r="188"
+                fill="none"
+                stroke="#D4AF37"
+                strokeWidth="1"
+                strokeDasharray="2 10"
               />
+            </svg>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
+            <div className="absolute inset-0 animate-float">
+              <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
+                {/* KENDİ FOTOĞRAFIMIZ */}
+                <Image
+                  src="/images/cennet-camuru.png"
+                  alt="Yeşil Rüya Cennet Çamuru"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 40vw, 90vw"
+                  className="object-contain"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-dark/50 via-transparent to-transparent" />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* KAYAN GALERİ ŞERİDİ */}
+      {/* KAYAN GALERİ ŞERİDİ — artık ayrı bir satır olarak en altta, metne değmiyor */}
       <div className="relative z-10 w-full overflow-hidden border-t border-cream/10 bg-emerald-dark/40 py-5 backdrop-blur-sm">
         <div className="flex w-max animate-marquee gap-6">
           {[...galleryImages, ...galleryImages].map((src, i) => (
