@@ -100,7 +100,7 @@ export default function Footer() {
                 <Phone className="h-4 w-4 text-gold-light" /> +90 546 590 27 79
               </p>
               <p className="flex items-center gap-2 font-body text-sm text-cream/55">
-                <Mail className="h-4 w-4 text-gold-light" />
+                <Mail className="h-4 w-4 text-gold-light" /> yesilruya99@gmail.com
               </p>
             </div>
           </div>
