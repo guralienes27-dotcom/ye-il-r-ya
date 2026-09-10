@@ -28,7 +28,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Antep fıstıklı, ipeksi kıvamlı imza cennet çamuru.",
     description:
       "Antep fıstığı ve %70 bitter çikolata ile hazırlanan, ipeksi kıvamlı imza tatlımız. Her parti elde, günlük taze üretilir.",
-    image: img("photo-1606313564200-e75d5e30476c"),
+    image: "/images/cennet-camuru.png",
     featured: true,
     rating: 5,
     reviews: 214,
@@ -178,7 +178,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Kilis usulü ince açılmış, hafif tatlı katmer.",
     description:
       "Kilis yöresinin geleneksel tarifiyle ince açılan hamurun hafif şekerlenmesiyle hazırlanan zarif katmer.",
-    image: img("photo-1488477181946-6428a0291777"),
+    image: "/images/fistikli-katmer.png",
     featured: false,
     rating: 4,
     reviews: 38,
