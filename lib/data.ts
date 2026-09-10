@@ -43,7 +43,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Sıcak servis edilen, eriyen peynirli klasik künefe.",
     description:
       "Kadayıf teli ve özel künefe peyniriyle hazırlanan, sıcak servis edilen geleneksel Antep künefesi.",
-    image: "/images/peynirli-kunefe.jpeg",
+    image: "/images/peynirli-kunefe.jpg",
     featured: false,
     rating: 5,
     reviews: 158,
@@ -58,7 +58,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Fıstık dolgulu, hasır dokulu çıtır kadayıf.",
     description:
       "İnce çekilmiş kadayıf telinin hasır şeklinde örülüp fıstıkla doldurulmasıyla hazırlanan çıtır klasik.",
-    image: "/images/burma-kadayif.jpeg",
+    image: "/images/burma-kadayif.jpg",
     featured: false,
     rating: 4,
     reviews: 96,
