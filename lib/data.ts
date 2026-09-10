@@ -28,7 +28,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Antep fıstıklı, ipeksi kıvamlı imza cennet çamuru.",
     description:
       "Antep fıstığı ve %70 bitter çikolata ile hazırlanan, ipeksi kıvamlı imza tatlımız. Her parti elde, günlük taze üretilir.",
-    image: "/images/cennet-camuru.png",
+    image: "/images/cennet-camuru.jpg",
     featured: true,
     rating: 5,
     reviews: 214,
