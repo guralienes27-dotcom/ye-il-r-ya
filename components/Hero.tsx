@@ -27,6 +27,7 @@ const images = [
   "/images/tel-kadayif.png",
   "/images/cennet-camuru.jpg",
   "/images/gerebic.webp",
+  "/images/GEREBİC-FOTO.webp",
 ];
 
 // Tek bir galeri grubu ekran genişliğinden kısa kalırsa kayarken boşluk görünebilir.
