@@ -148,7 +148,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Simit şeklinde sarılmış, fıstıklı özel katmer.",
     description:
       "Geleneksel katmer hamurunun simit formunda sarılıp fıstıkla doldurulmasıyla hazırlanan görsel ve lezzet şöleni.",
-    image: img("photo-1571877227200-a0d98ea607e9"),
+    image: "/images/simit katmer.png",
     featured: false,
     rating: 4,
     reviews: 52,
@@ -163,7 +163,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Üçgen muska formunda çıtır fıstıklı katmer.",
     description:
       "İnce hamurun üçgen muska formunda katlanıp fıstıkla doldurulmasıyla hazırlanan, tek lokmalık çıtır seçki.",
-    image: img("photo-1541599468348-e96984315921"),
+    image: "/images/muska-katmer.png",
     featured: false,
     rating: 4,
     reviews: 45,
