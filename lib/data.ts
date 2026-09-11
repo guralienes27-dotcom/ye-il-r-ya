@@ -58,7 +58,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Fıstık dolgulu, hasır dokulu çıtır kadayıf.",
     description:
       "İnce çekilmiş kadayıf telinin hasır şeklinde örülüp fıstıkla doldurulmasıyla hazırlanan çıtır klasik.",
-    image: "/images/burma-kadayif.jpg",
+    image: "/images/hasir-kadayif.jpg",
     featured: false,
     rating: 4,
     reviews: 96,
@@ -103,7 +103,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Fıstık dolgulu, burma şeklinde sarılmış kadayıf.",
     description:
       "Kadayıf telinin fıstık dolgusu etrafında burularak sarılmasıyla hazırlanan, hafif şerbetli klasik.",
-    image: img("photo-1587314168485-3236d6710814"),
+    image: "/images/burma-kadayif.jpg",
     featured: false,
     rating: 4,
     reviews: 74,
