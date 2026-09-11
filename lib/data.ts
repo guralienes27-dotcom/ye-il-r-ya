@@ -73,7 +73,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Bol Antep fıstıklı, şerbetli geleneksel kadayıf.",
     description:
       "Bol Antep fıstığı ile katman katman hazırlanan, kıvamında şerbetlenmiş geleneksel kadayıf tatlısı.",
-    image: img("photo-1541599468348-e96984315921"),
+    image: "/images/fistikli-kadayif.png",
     featured: true,
     rating: 5,
     reviews: 187,
@@ -133,7 +133,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Taze kaymak ve fıstıkla hazırlanan imza katmer.",
     description:
       "İnce açılmış hamurun taze kaymak ve bol Antep fıstığı ile katmer katmer hazırlandığı, sabah kahvaltısının prestij klasiği.",
-    image: img("photo-1606312619070-d48b4c652a52"),
+    image: "/images/antep-katmeri.png",
     featured: true,
     rating: 5,
     reviews: 143,
