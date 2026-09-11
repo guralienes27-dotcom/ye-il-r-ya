@@ -148,7 +148,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Simit şeklinde sarılmış, fıstıklı özel katmer.",
     description:
       "Geleneksel katmer hamurunun simit formunda sarılıp fıstıkla doldurulmasıyla hazırlanan görsel ve lezzet şöleni.",
-    image: "/images/simit katmer.png",
+    image: "/images/simit-katmer.png",
     featured: false,
     rating: 4,
     reviews: 52,
