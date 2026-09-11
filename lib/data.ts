@@ -88,7 +88,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Fıstık ve dondurma eşliğinde özel sunum künefe.",
     description:
       "Klasik künefenin üzerine bol Antep fıstığı ve isteğe bağlı dondurma ile zenginleştirilen özel sunumumuz.",
-    image: img("photo-1488477181946-6428a0291777"),
+    image: "/images/special-künefe.jpg",
     featured: true,
     rating: 5,
     reviews: 132,
@@ -118,7 +118,7 @@ export const products: StoreProduct[] = [
     shortDescription: "Cam gibi parlayan, yoğun fıstıklı özel kadayıf.",
     description:
       "İnce kadayıf katmanları arasına bolca fıstık serpiştirilerek hazırlanan, adını billur parıltısından alan prestij tatlımız.",
-    image: img("photo-1606313564200-e75d5e30476c"),
+    image: "/images/billuriye.webp",
     featured: false,
     rating: 5,
     reviews: 61,
