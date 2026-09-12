@@ -121,8 +121,8 @@ export default function Hero() {
               className="animate-fade-up text-balance font-display text-4xl font-semibold leading-[1.15] text-cream sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]"
               style={{ animationDelay: "0.12s" }}
             >
-              Gaziantep&apos;in En Özel{" "}
-              <span className="text-gold-light">Cennet Çamuru</span>
+              Kilis&apos;in Efsane Lezzetleri Gaziantepde{" "}
+              <span className="text-gold-light">Cennet Çamuru & gerebiç</span>
             </h1>
 
             <p
