@@ -3,12 +3,12 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, ShoppingBag, ArrowLeft } from "lucide-react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/lib/cart-context";
-import { db } from "@/lib/firebase";
+
 
 type FormErrors = {
   name?: string;
@@ -111,10 +111,20 @@ export default function CheckoutPage() {
 
         status: "pending",
 
-        createdAt: serverTimestamp(),
+        createdAt: new Date().toISOString(),
       };
 
-      await addDoc(collection(db, "orders"), orderData);
+      const response = await fetch("/api/orders", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(orderData),
+});
+
+if (!response.ok) {
+  throw new Error("Sipariş veritabanına kaydedilemedi.");
+} 
 
       setOrderNumber(generatedOrderNumber);
 
