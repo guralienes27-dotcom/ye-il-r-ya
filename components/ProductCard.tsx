@@ -4,9 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Heart, Star, ShoppingBag } from "lucide-react";
 import type { Product } from "@/types";
-import { useCart } from "@/lib/cart-context";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+ import { useCart } from "@/lib/cart-context";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useRouter } from "next/navigation";
@@ -25,7 +23,7 @@ export default function ProductCard({
   isNew,
   stockLeft,
 }: { product: Product } & ProductCardExtras) {
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const { addItem } = useCart();
 
@@ -64,19 +62,7 @@ export default function ProductCard({
     if (favoritePending) return;
 
     try {
-      const userRef = doc(db, "users", user.uid);
-
-      if (favorited) {
-        await updateDoc(userRef, {
-          favorites: arrayRemove(product.id),
-        });
-      } else {
-        await updateDoc(userRef, {
-          favorites: arrayUnion(product.id),
-        });
-      }
-
-      await toggleFavorite(product.id);
+       await toggleFavorite(product.id);
     } catch (error) {
       console.error("Favori işlemi başarısız:", error);
     }
@@ -207,8 +193,7 @@ export default function ProductCard({
             className="relative z-30 inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full bg-gold-sheen px-5 py-2.5 font-body text-sm font-bold text-emerald-dark shadow-gold transition-transform duration-200 hover:scale-105 active:scale-95 disabled:cursor-wait disabled:opacity-70"
           >
             <ShoppingBag className="h-4 w-4" />
-
-            {isAdding ? "Ekleniyor..." : "Sepete Ekle"}
+             {isAdding ? "Ekleniyor..." : "Sepete Ekle"}
           </button>
         </div>
       </div>

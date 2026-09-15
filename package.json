@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "firebase": "^12.17.1",
     "lucide-react": "^0.462.0",
     "mysql2": "^3.24.4",
     "next": "^16.3.0",

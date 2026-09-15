@@ -8,21 +8,16 @@ import {
   type ReactNode,
 } from "react";
 
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  sendPasswordResetEmail,
-  updateProfile,
-  type User,
-} from "firebase/auth";
+ import type { UserProfile } from "@/types";
 
-import { auth } from "@/lib/firebase";
-import type { UserProfile } from "@/types";
+interface LocalUser {
+  uid: string;
+  email: string;
+  displayName?: string | null;
+}
 
 interface AuthContextValue {
-  user: User | null;
+  user: LocalUser | null;
   profile: UserProfile | null;
   loading: boolean;
 
@@ -42,50 +37,33 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+const USER_KEY = "yesilruya_user";
+const PROFILE_KEY = "yesilruya_profile";
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<LocalUser | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+    try {
+      const savedUser = localStorage.getItem(USER_KEY);
+      const savedProfile = localStorage.getItem(PROFILE_KEY);
 
-      if (firebaseUser) {
-        try {
-          const savedProfile = localStorage.getItem(
-            `profile_${firebaseUser.uid}`
-          );
-
-          if (savedProfile) {
-            setProfile(JSON.parse(savedProfile));
-          } else {
-            const fallbackProfile: UserProfile = {
-              uid: firebaseUser.uid,
-              fullName: firebaseUser.displayName || "Kullanıcı",
-              email: firebaseUser.email || "",
-              phone: "",
-              createdAt: new Date().toISOString(),
-              favorites: [],
-              addresses: [],
-              orders: [],
-            };
-
-            setProfile(fallbackProfile);
-          }
-        } catch (error) {
-          console.error("Profil bilgileri okunamadı:", error);
-          setProfile(null);
-        }
-      } else {
-        setProfile(null);
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
       }
 
-      // Kullanıcı kontrolü bitti.
+      if (savedProfile) {
+        setProfile(JSON.parse(savedProfile));
+      }
+    } catch (error) {
+      console.error("Kullanıcı bilgileri okunamadı:", error);
+      setUser(null);
+      setProfile(null);
+    } finally {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
+    }
   }, []);
 
   const signUp = async (
@@ -94,18 +72,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     phone: string,
     password: string
   ) => {
-    const credential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    if (!fullName.trim()) {
+      throw new Error("Ad soyad zorunludur.");
+    }
 
-    await updateProfile(credential.user, {
-      displayName: fullName,
-    });
+    if (!email.trim()) {
+      throw new Error("E-posta zorunludur.");
+    }
+
+    if (!password || password.length < 6) {
+      throw new Error("Şifre en az 6 karakter olmalıdır.");
+    }
+
+    const uid = `local-${Date.now()}`;
+
+    const newUser: LocalUser = {
+      uid,
+      email,
+       displayName: fullName,
+     };
 
     const newProfile: UserProfile = {
-      uid: credential.user.uid,
+      uid,
       fullName,
       email,
       phone,
@@ -115,26 +103,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       orders: [],
     };
 
-    localStorage.setItem(
-      `profile_${credential.user.uid}`,
-      JSON.stringify(newProfile)
-    );
+    localStorage.setItem(USER_KEY, JSON.stringify(newUser));
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(newProfile));
 
-    setUser(credential.user);
+    setUser(newUser);
     setProfile(newProfile);
   };
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    const savedUser = localStorage.getItem(USER_KEY);
+    const savedProfile = localStorage.getItem(PROFILE_KEY);
+
+    if (!savedUser || !savedProfile) {
+      throw new Error("Kayıtlı kullanıcı bulunamadı.");
+    }
+
+    const parsedUser: LocalUser = JSON.parse(savedUser);
+    const parsedProfile: UserProfile = JSON.parse(savedProfile);
+
+    if (parsedUser.email !== email) {
+      throw new Error("E-posta veya şifre hatalı.");
+    }
+
+    if (!password) {
+      throw new Error("Şifre zorunludur.");
+    }
+
+    setUser(parsedUser);
+    setProfile(parsedProfile);
   };
 
   const signOutUser = async () => {
+    setUser(null);
     setProfile(null);
-    await firebaseSignOut(auth);
-  };
+   };
 
   const resetPassword = async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
+    if (!email.trim()) {
+      throw new Error("E-posta adresi zorunludur.");
+    }
+
+    throw new Error(
+      "Şifre sıfırlama sistemi henüz kendi veritabanımıza bağlanmadı."
+    );
   };
 
   return (
@@ -162,4 +173,4 @@ export function useAuth() {
   }
 
   return ctx;
-} 
+}

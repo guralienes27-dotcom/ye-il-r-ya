@@ -1,17 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  arrayRemove,
-  arrayUnion,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
-
-import { db } from "@/lib/firebase";
+ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+
+const FAVORITES_KEY = "yesilruya_favorites";
 
 export function useFavorites() {
   const { user } = useAuth();
@@ -22,42 +15,32 @@ export function useFavorites() {
   const [pending, setPending] = useState<string | null>(null);
 
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem(FAVORITES_KEY);
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed)) {
+          setFavorites(parsed);
+        }
+      }
+    } catch (error) {
+      console.error("Favoriler yüklenemedi:", error);
+      setFavorites([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!user) {
       setFavorites([]);
-      setLoading(false);
-      return;
     }
-
-    setLoading(true);
-
-    const userRef = doc(db, "users", user.uid);
-
-    const unsubscribe = onSnapshot(
-      userRef,
-      (snapshot) => {
-        const data = snapshot.data();
-
-        const list = Array.isArray(data?.favorites)
-          ? (data.favorites as string[])
-          : [];
-
-        setFavorites(list);
-        setLoading(false);
-      },
-      (error) => {
-        console.error("Favoriler yüklenemedi:", error);
-        setFavorites([]);
-        setLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
   }, [user]);
 
   const isFavorite = useCallback(
-    (productId: string) => {
-      return favorites.includes(productId);
-    },
+    (productId: string) => favorites.includes(productId),
     [favorites]
   );
 
@@ -66,33 +49,29 @@ export function useFavorites() {
       if (!user) {
         router.push("/login");
         return;
-      }
+       }
 
-      const userRef = doc(db, "users", user.uid);
-
-      const alreadyFavorite = favorites.includes(productId);
-
-      setPending(productId);
+       setPending(productId);
 
       try {
-        await updateDoc(userRef, {
-          favorites: alreadyFavorite
-            ? arrayRemove(productId)
-            : arrayUnion(productId),
+        setFavorites((current) => {
+          const next = current.includes(productId)
+            ? current.filter((id) => id !== productId)
+            : [...current, productId];
+
+          localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));
+
+          return next;
         });
-      } catch (error) {
-        console.error("Favori güncellenemedi:", error);
       } finally {
         setPending(null);
       }
     },
-    [user, favorites, router]
+    [user, router]
   );
 
   const isPending = useCallback(
-    (productId: string) => {
-      return pending === productId;
-    },
+    (productId: string) => pending === productId,
     [pending]
   );
 
@@ -103,4 +82,4 @@ export function useFavorites() {
     loading,
     isPending,
   };
-} 
+}
