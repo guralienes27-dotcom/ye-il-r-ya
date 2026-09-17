@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
 import mysql from "mysql2/promise";
+import { randomUUID } from "crypto";
+import { products } from "@/lib/data";
+
+type IncomingItem = {
+  id?: unknown;
+  quantity?: unknown;
+};
 
 export async function POST(request: Request) {
   let connection;
@@ -7,29 +14,113 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const {
-      orderNumber,
-      customer,
-      items,
-      totalPrice,
-      currency,
-      status,
-    } = body;
+    const customer = body?.customer;
+    const incomingItems: IncomingItem[] = body?.items;
 
+    // Müşteri bilgilerini kontrol et
     if (
-      !orderNumber ||
-      !customer?.name ||
-      !customer?.phone ||
-      !customer?.email ||
-      !customer?.address ||
-      !Array.isArray(items) ||
-      items.length === 0
+      typeof customer?.name !== "string" ||
+      typeof customer?.phone !== "string" ||
+      typeof customer?.email !== "string" ||
+      typeof customer?.address !== "string"
     ) {
       return NextResponse.json(
-        { error: "Eksik sipariş bilgileri." },
+        { error: "Müşteri bilgileri eksik veya geçersiz." },
         { status: 400 }
       );
     }
+
+    const name = customer.name.trim();
+    const phone = customer.phone.trim();
+    const email = customer.email.trim();
+    const address = customer.address.trim();
+
+    if (
+      name.length < 2 ||
+      name.length > 150 ||
+      phone.length < 5 ||
+      phone.length > 50 ||
+      email.length < 5 ||
+      email.length > 190 ||
+      address.length < 5 ||
+      address.length > 2000
+    ) {
+      return NextResponse.json(
+        { error: "Müşteri bilgileri geçersiz." },
+        { status: 400 }
+      );
+    }
+
+    // Basit e-posta kontrolü
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json(
+        { error: "Geçerli bir e-posta adresi girin." },
+        { status: 400 }
+      );
+    }
+
+    if (!Array.isArray(incomingItems) || incomingItems.length === 0) {
+      return NextResponse.json(
+        { error: "Sepet boş." },
+        { status: 400 }
+      );
+    }
+
+    if (incomingItems.length > 50) {
+      return NextResponse.json(
+        { error: "Sepette çok fazla ürün var." },
+        { status: 400 }
+      );
+    }
+
+    // Fiyatları istemciden ALMIYORUZ.
+    // Ürün ID'sine göre sunucudaki products listesinden buluyoruz.
+    const verifiedItems = incomingItems.map((incomingItem) => {
+      if (
+        typeof incomingItem.id !== "string" ||
+        typeof incomingItem.quantity !== "number" ||
+        !Number.isInteger(incomingItem.quantity) ||
+        incomingItem.quantity < 1 ||
+        incomingItem.quantity > 20
+      ) {
+        throw new Error("INVALID_ITEM");
+      }
+
+      const product = products.find(
+        (item) => item.id === incomingItem.id
+      );
+
+      if (!product) {
+        throw new Error("PRODUCT_NOT_FOUND");
+      }
+
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        currency: product.currency,
+        image: product.image,
+        quantity: incomingItem.quantity,
+        subtotal: product.price * incomingItem.quantity,
+      };
+    });
+
+    // Toplam fiyat tamamen sunucuda hesaplanıyor.
+    const totalPrice = verifiedItems.reduce(
+      (total, item) => total + item.subtotal,
+      0
+    );
+
+    // Sipariş numarasını da sunucu oluşturuyor.
+    const orderNumber =
+      "YR-" +
+      Date.now().toString(36).toUpperCase() +
+      "-" +
+      randomUUID().slice(0, 6).toUpperCase();
+
+    // Kullanıcı status gönderse bile dikkate alınmıyor.
+    const status = "pending";
+    const currency = "₺";
 
     connection = await mysql.createConnection({
       host: process.env.DB_HOST,
@@ -55,14 +146,14 @@ export async function POST(request: Request) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         orderNumber,
-        customer.name,
-        customer.phone,
-        customer.email,
-        customer.address,
-        JSON.stringify(items),
+        name,
+        phone,
+        email,
+        address,
+        JSON.stringify(verifiedItems),
         totalPrice,
-        currency || "₺",
-        status || "pending",
+        currency,
+        status,
       ]
     );
 
@@ -70,10 +161,28 @@ export async function POST(request: Request) {
       {
         success: true,
         orderNumber,
+        totalPrice,
+        currency,
       },
       { status: 201 }
     );
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "INVALID_ITEM") {
+        return NextResponse.json(
+          { error: "Ürün adedi veya ürün bilgisi geçersiz." },
+          { status: 400 }
+        );
+      }
+
+      if (error.message === "PRODUCT_NOT_FOUND") {
+        return NextResponse.json(
+          { error: "Sepette artık mevcut olmayan bir ürün var." },
+          { status: 400 }
+        );
+      }
+    }
+
     console.error("Sipariş kaydetme hatası:", error);
 
     return NextResponse.json(

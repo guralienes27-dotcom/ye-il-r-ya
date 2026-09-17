@@ -82,58 +82,42 @@ export default function CheckoutPage() {
     setSubmitting(true);
 
     try {
-      const generatedOrderNumber = `YR-${Date.now()
-        .toString()
-        .slice(-8)}`;
-
       const orderData = {
-        orderNumber: generatedOrderNumber,
-
         customer: {
           name: name.trim(),
           phone: phone.trim(),
           email: email.trim(),
           address: address.trim(),
         },
-
         items: items.map((item) => ({
           id: item.id,
-          name: item.name,
-          price: item.price,
-          currency: item.currency,
-          image: item.image,
           quantity: item.quantity,
-          subtotal: item.price * item.quantity,
         })),
-
-        totalPrice,
-        currency,
-
-        status: "pending",
-
-        createdAt: new Date().toISOString(),
       };
 
       const response = await fetch("/api/orders", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(orderData),
-});
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
 
-if (!response.ok) {
-  throw new Error("Sipariş veritabanına kaydedilemedi.");
-} 
+      const result = await response.json();
 
-      setOrderNumber(generatedOrderNumber);
+      if (!response.ok) {
+        throw new Error(result?.error || "Sipariş veritabanına kaydedilemedi.");
+      }
 
+      setOrderNumber(result.orderNumber);
       clearCart();
     } catch (error) {
       console.error("Sipariş oluşturulamadı:", error);
 
       setSubmitError(
-        "Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
+        error instanceof Error
+          ? error.message
+          : "Sipariş oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
       );
     } finally {
       setSubmitting(false);
