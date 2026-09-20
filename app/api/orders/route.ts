@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 import { randomUUID } from "crypto";
-import { products } from "@/lib/data";
+import { getProductsByIds } from "@/lib/products-db";
 
 type IncomingItem = {
   id?: unknown;
@@ -9,7 +9,7 @@ type IncomingItem = {
 };
 
 export async function POST(request: Request) {
-  let connection;
+  let connection: mysql.Connection | undefined;
 
   try {
     const body = await request.json();
@@ -51,8 +51,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Basit e-posta kontrolü
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { error: "Geçerli bir e-posta adresi girin." },
         { status: 400 }
@@ -73,20 +72,34 @@ export async function POST(request: Request) {
       );
     }
 
-    // Fiyatları istemciden ALMIYORUZ.
-    // Ürün ID'sine göre sunucudaki products listesinden buluyoruz.
-    const verifiedItems = incomingItems.map((incomingItem) => {
+    // Önce gelen ürün ID ve adetlerini doğrula.
+    const cleanItems = incomingItems.map((item) => {
       if (
-        typeof incomingItem.id !== "string" ||
-        typeof incomingItem.quantity !== "number" ||
-        !Number.isInteger(incomingItem.quantity) ||
-        incomingItem.quantity < 1 ||
-        incomingItem.quantity > 20
+        typeof item.id !== "string" ||
+        typeof item.quantity !== "number" ||
+        !Number.isInteger(item.quantity) ||
+        item.quantity < 1 ||
+        item.quantity > 20
       ) {
         throw new Error("INVALID_ITEM");
       }
 
-      const product = products.find(
+      return {
+        id: item.id,
+        quantity: item.quantity,
+      };
+    });
+
+    // Tekrarlanan ID'leri kaldır.
+    const productIds = [...new Set(cleanItems.map((item) => item.id))];
+
+    // Ürünleri ve GERÇEK fiyatları MySQL'den getir.
+    const databaseProducts = await getProductsByIds(productIds);
+
+    // İstemciden fiyat almıyoruz.
+    // Her ürünü MySQL'deki güncel ürünle eşleştiriyoruz.
+    const verifiedItems = cleanItems.map((incomingItem) => {
+      const product = databaseProducts.find(
         (item) => item.id === incomingItem.id
       );
 
@@ -94,33 +107,35 @@ export async function POST(request: Request) {
         throw new Error("PRODUCT_NOT_FOUND");
       }
 
+      const price = Number(product.price);
+
       return {
         id: product.id,
         name: product.name,
-        price: product.price,
+        price,
         currency: product.currency,
         image: product.image,
         quantity: incomingItem.quantity,
-        subtotal: product.price * incomingItem.quantity,
+        subtotal: price * incomingItem.quantity,
       };
     });
 
-    // Toplam fiyat tamamen sunucuda hesaplanıyor.
+    // Toplam fiyat tamamen sunucuda ve DB fiyatlarıyla hesaplanır.
     const totalPrice = verifiedItems.reduce(
       (total, item) => total + item.subtotal,
       0
     );
 
-    // Sipariş numarasını da sunucu oluşturuyor.
-    const orderNumber =
+     const orderNumber =
       "YR-" +
       Date.now().toString(36).toUpperCase() +
       "-" +
       randomUUID().slice(0, 6).toUpperCase();
 
-    // Kullanıcı status gönderse bile dikkate alınmıyor.
-    const status = "pending";
-    const currency = "₺";
+     const status = "pending";
+
+    // Sepet tek para birimi kullanıyor.
+    const currency = verifiedItems[0]?.currency ?? "₺";
 
     connection = await mysql.createConnection({
       host: process.env.DB_HOST,
@@ -131,7 +146,8 @@ export async function POST(request: Request) {
     });
 
     await connection.execute(
-      `INSERT INTO orders
+      `
+      INSERT INTO orders
       (
         order_number,
         customer_name,
@@ -143,7 +159,8 @@ export async function POST(request: Request) {
         currency,
         status
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
       [
         orderNumber,
         name,
@@ -194,4 +211,4 @@ export async function POST(request: Request) {
       await connection.end();
     }
   }
-}
+} 

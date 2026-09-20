@@ -3,11 +3,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ProductDetailPremium from "@/components/ProductDetailPremium";
-import { products } from "@/lib/data";
-
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
+import {
+  getProductBySlug,
+  getProducts,
+} from "@/lib/products-db";
 
 export default async function ProductPage({
   params,
@@ -15,17 +14,29 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = products.find((p) => p.slug === slug);
 
-  if (!product) notFound();
+  // Ürünü doğrudan MySQL'den getir.
+  const product = await getProductBySlug(slug);
+
+  if (!product) {
+    notFound();
+  }
+
+  // Benzer ürünleri de MySQL'den getir.
+  const products = await getProducts();
 
   const related = products
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
+    .filter(
+      (p) =>
+        p.category === product.category &&
+        p.slug !== product.slug
+    )
     .slice(0, 3);
 
   return (
     <main className="overflow-x-hidden bg-cream">
       <Navbar />
+
       <ProductDetailPremium product={product} />
 
       {related.length > 0 && (
@@ -33,9 +44,13 @@ export default async function ProductPage({
           <h2 className="mb-10 text-balance font-display text-3xl font-semibold text-emerald-dark sm:text-4xl">
             Benzer Ürünler
           </h2>
+
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard
+                key={p.id}
+                product={p}
+              />
             ))}
           </div>
         </section>
@@ -44,4 +59,4 @@ export default async function ProductPage({
       <Footer />
     </main>
   );
-}
+} 

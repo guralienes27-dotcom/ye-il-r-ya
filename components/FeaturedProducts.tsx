@@ -1,4 +1,4 @@
-import { products } from "@/lib/data";
+import { getProducts } from "@/lib/products-db";
 import ProductCard, { ProductCardExtras } from "./ProductCard";
 
 const enrichment: Record<string, ProductCardExtras> = {
@@ -9,7 +9,9 @@ const enrichment: Record<string, ProductCardExtras> = {
   "karamelize-badem": { oldPrice: 460 },
 };
 
-export default function FeaturedProducts() {
+export default async function FeaturedProducts() {
+  const products = await getProducts();
+
   return (
     <section id="products" className="relative bg-cream py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -17,9 +19,11 @@ export default function FeaturedProducts() {
           <span className="font-body text-xs font-bold uppercase tracking-[0.3em] text-gold-dark">
             Öne Çıkan Seçki
           </span>
+
           <h2 className="mt-4 text-balance font-display text-4xl font-semibold text-emerald-dark sm:text-5xl">
             İmza Tatlılarımız
           </h2>
+
           <p className="mt-5 font-body text-base leading-relaxed text-ink/60">
             Her biri elde, taze ve sınırlı sayıda üretilen; Antep fıstığının
             en asil hâliyle buluştuğu seçki.
@@ -38,4 +42,4 @@ export default function FeaturedProducts() {
       </div>
     </section>
   );
-}
+} 
