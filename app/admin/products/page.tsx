@@ -32,6 +32,8 @@ export default function ProductsAdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [uploadingId, setUploadingId] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({});
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -85,6 +87,60 @@ export default function ProductsAdminPage() {
           : product
       )
     );
+  };
+
+  const uploadImage = async (productId: string) => {
+    const file = selectedFiles[productId];
+
+    if (!file) {
+      setError("Önce bir fotoğraf seç.");
+      return;
+    }
+
+    if (
+      !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
+      file.size === 0 ||
+      file.size > 5 * 1024 * 1024
+    ) {
+      setError("JPG, PNG veya WebP biçiminde, en fazla 5 MB fotoğraf seç.");
+      return;
+    }
+
+    setUploadingId(productId);
+    setError("");
+    setMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
+
+      const data = await response.json();
+      if (!response.ok || typeof data.image !== "string") {
+        throw new Error(data.error || "Fotoğraf yüklenemedi.");
+      }
+
+      updateProduct(productId, "image", data.image);
+      setSelectedFiles((current) => {
+        const next = { ...current };
+        delete next[productId];
+        return next;
+      });
+      setMessage("Fotoğraf yüklendi. Ürüne uygulamak için Kaydet'e bas.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Fotoğraf yüklenemedi.");
+    } finally {
+      setUploadingId(null);
+    }
   };
 
   const saveProduct = async (product: Product) => {
@@ -240,6 +296,41 @@ export default function ProductsAdminPage() {
                       )}
                     </div>
 
+                    <div className="mt-4 space-y-3">
+                      <label className="block font-body text-xs font-semibold text-emerald-dark">
+                        Bilgisayardan fotoğraf seç
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            setSelectedFiles((current) => ({
+                              ...current,
+                              [product.id]: file,
+                            }));
+                          }
+                        }}
+                        className="block w-full font-body text-xs text-ink"
+                      />
+                      {selectedFiles[product.id] && (
+                        <p className="font-body text-xs text-ink/60">
+                          Seçilen: {selectedFiles[product.id].name}
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => void uploadImage(product.id)}
+                        disabled={!selectedFiles[product.id] || uploadingId !== null}
+                        className="w-full rounded-xl bg-emerald-dark px-4 py-3 font-body text-sm font-bold text-cream disabled:opacity-50"
+                      >
+                        {uploadingId === product.id
+                          ? "Fotoğraf yükleniyor..."
+                          : "Fotoğrafı Yükle"}
+                      </button>
+                    </div>
+
                     <label className="mt-3 block font-body text-xs font-semibold text-emerald-dark">
                       Görsel yolu
                     </label>
@@ -324,7 +415,7 @@ export default function ProductsAdminPage() {
                           <option value="Künefe">
                             Künefe
                           </option>
-                          <option value="Kadayif">
+                          <option value="Kadayıf">
                             Kadayıf
                           </option>
                           <option value="Katmer">
@@ -427,7 +518,7 @@ export default function ProductsAdminPage() {
                       <button
                         type="button"
                         onClick={() => void saveProduct(product)}
-                        disabled={savingId === product.id}
+                        disabled={savingId === product.id || uploadingId === product.id}
                         className="ml-auto inline-flex items-center justify-center gap-2 rounded-full bg-emerald-dark px-6 py-3 font-body text-sm font-bold text-cream shadow-soft transition-transform hover:scale-105 disabled:cursor-wait disabled:opacity-50"
                       >
                         {savingId === product.id ? (
