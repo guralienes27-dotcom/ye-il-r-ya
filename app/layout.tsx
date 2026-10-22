@@ -37,6 +37,9 @@ export const metadata: Metadata = {
     "premium tatlı",
     "Yeşil Rüya",
   ],
+    icons: {
+    icon: "/images/ikon.jpeg",
+  },
 };
 
 export default function RootLayout({
@@ -56,4 +59,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-} 
+}

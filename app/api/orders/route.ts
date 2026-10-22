@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       );
     }
 
-     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { error: "Geçerli bir e-posta adresi girin." },
         { status: 400 }

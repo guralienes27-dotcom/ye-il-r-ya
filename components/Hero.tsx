@@ -179,7 +179,7 @@ export default function Hero() {
               <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-soft ring-1 ring-cream/10">
                 {/* KENDİ FOTOĞRAFIMIZ */}
                 <Image
-                  src="/images/cennet-camuru.jpg"
+                  src="/images/site-ana-foto.jpg"
                   alt="Yeşil Rüya Cennet Çamuru"
                   fill
                   priority
